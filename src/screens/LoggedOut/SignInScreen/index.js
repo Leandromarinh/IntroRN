@@ -20,7 +20,13 @@ import { AntDesign } from '@expo/vector-icons';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 
+import api from '../../../services/api';
+
+import { showMessage } from 'react-native-flash-message';
+
 import Routes from '../../../routes/routes';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignInScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -32,25 +38,54 @@ const SignInScreen = ({ navigation }) => {
       .required('Endereço de e-mail obrigatório'),
     password: yup
       .string()
-      .min(8, ({ min }) => 'A senha deve ter no mínimo ${min} caracteres')
+      .min(6, ({ min }) => `A senha deve ter no mínimo ${min} caracteres`)
       .required('Senha obrigatória'),
   });
 
   const initialValues = { email: '', password: '' };
 
-  function Submit(values) {
-    Keyboard.dismiss();
-    console.log(values.email, values.password);
+  const NavigateToHome = data =>
+    navigation.navigate(Routes.HOME, {
+      name: `${data.User.name}`,
+    });
+
+  async function Submit(values) {
+    try {
+      Keyboard.dismiss();
+      setLoading(true);
+      const { data } = await api.post('/login', {
+        email: values.email,
+        password: values.password,
+      });
+      await AsyncStorage.setItem('@token', data.token);
+      showMessage({
+        message: 'Login efetuado com sucesso',
+        description: `Bem Vindo, ${data.User.name}`,
+        type: 'success',
+        icon: 'success',
+        duration: 4000,
+      });
+      setLoading(false);
+      NavigateToHome(data);
+    } catch {
+      showMessage({
+        message: 'Erro ao fazer Login',
+        description: `Endereço de email ou senha incorretos`,
+        type: 'danger',
+        icon: 'danger',
+      });
+      setLoading(false);
+    }
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1, backgroundColor: `${colors.background}` }}
+    <TouchableWithoutFeedback
+      style={{ flex: 1 }}
+      onPress={() => Keyboard.dismiss()}
     >
-      <TouchableWithoutFeedback
-        style={{ flex: 1 }}
-        onPress={() => Keyboard.dismiss()}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1, backgroundColor: `${colors.background}` }}
       >
         <Formik
           initialValues={initialValues}
@@ -63,7 +98,6 @@ const SignInScreen = ({ navigation }) => {
             errors,
             touched,
             handleSubmit,
-            isValid,
             handleBlur,
           }) => (
             <Container>
@@ -84,7 +118,7 @@ const SignInScreen = ({ navigation }) => {
               <Input
                 title={'Senha'}
                 marginLeft={0}
-                marginTop={23}
+                marginTop={25}
                 secureTextEntry
                 value={values.password}
                 onChangeText={handleChange('password')}
@@ -116,8 +150,8 @@ const SignInScreen = ({ navigation }) => {
             </Container>
           )}
         </Formik>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 

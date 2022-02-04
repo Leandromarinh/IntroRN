@@ -34,5 +34,4 @@ export const TextError = styled.Text`
   font-weight: 500;
   color: ${colors.error};
   align-self: flex-start;
-  margin-bottom: 15px;
 `;

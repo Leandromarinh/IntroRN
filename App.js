@@ -13,11 +13,11 @@ export default function App() {
     <NavigationContainer>
       <MainRoutes />
       <StatusBar style='auto' />
-      {/* <FlashMessage
+      <FlashMessage
         floating={true}
-        style={{ alignItems: 'center' }}
+        style={{ alignItems: 'center', marginTop: 25 }}
         titleStyle={{ fontWeight: 'bold' }}
-      /> */}
+      />
     </NavigationContainer>
   );
 }

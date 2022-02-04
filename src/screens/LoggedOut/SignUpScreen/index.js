@@ -20,6 +20,8 @@ import { Formik } from 'formik';
 
 import Routes from '../../../routes/routes';
 
+import { showMessage } from 'react-native-flash-message';
+
 const SignUpScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
@@ -49,14 +51,35 @@ const SignUpScreen = ({ navigation }) => {
     confirmPassword: '',
   };
 
-  function Submit(values) {
-    Keyboard.dismiss();
-    console.log(
-      values.name,
-      values.email,
-      values.password,
-      values.confirmPassword
-    );
+  const NavigateToSignIn = () => navigation.navigate(Routes.SIGN_IN);
+
+  async function Submit(values) {
+    try {
+      Keyboard.dismiss();
+      setLoading(true);
+      const { data } = await api.post('/signup', {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      });
+      showMessage({
+        message: 'Cadastro efetuado com sucesso',
+        description: `Faça seu login`,
+        type: 'success',
+        icon: 'success',
+        duration: 4000,
+      });
+      setLoading(false);
+      NavigateToSignIn();
+    } catch {
+      showMessage({
+        message: 'Erro ao fazer Cadastro',
+        description: `Endereço de email incorreto`,
+        type: 'danger',
+        icon: 'danger',
+      });
+      setLoading(false);
+    }
   }
 
   return (
@@ -104,7 +127,7 @@ const SignUpScreen = ({ navigation }) => {
                 autoCapitalize='sentences'
               />
               <Input
-                marginTop={12}
+                marginTop={25}
                 marginLeft={0}
                 title='E-mail'
                 placeholder='Digite seu e-mail'
@@ -118,7 +141,7 @@ const SignUpScreen = ({ navigation }) => {
                 autoComplete='email'
               />
               <Input
-                marginTop={12}
+                marginTop={25}
                 marginLeft={0}
                 title='Senha'
                 secureTextEntry
@@ -131,7 +154,7 @@ const SignUpScreen = ({ navigation }) => {
                 error={errors.password}
               />
               <Input
-                marginTop={12}
+                marginTop={25}
                 marginLeft={0}
                 title='Repetir senha'
                 secureTextEntry
