@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { Container, Title, InputText } from './styles';
+import { Container, Title, InputText, TextError } from './styles';
 
 const Input = ({
   title,
@@ -16,6 +16,8 @@ const Input = ({
   value,
   onSubmitEditing,
   onBlur,
+  autoCapitalize,
+  autoComplete,
 }) => (
   <Container marginTop={marginTop} marginLeft={marginLeft}>
     <Title>{title}</Title>
@@ -29,7 +31,10 @@ const Input = ({
       value={value}
       onSubmitEditing={onSubmitEditing}
       onBlur={onBlur}
+      autoCapitalize={autoCapitalize}
+      autoComplete={autoComplete}
     />
+    {error && touched && <TextError>{error}</TextError>}
   </Container>
 );
 

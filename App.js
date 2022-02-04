@@ -1,14 +1,23 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 
-import SignInScreen from './src/screens/LoggedOut/SignInScreen';
-import SignUpScreen from './src/screens/LoggedOut/SignUpScreen';
+import { NavigationContainer } from '@react-navigation/native';
+
+import FlashMessage from 'react-native-flash-message';
+
+import MainRoutes from './src/routes/main.routes';
 
 export default function App() {
   return (
-    <>
-      <SignUpScreen />
+    <NavigationContainer>
+      <MainRoutes />
       <StatusBar style='auto' />
-    </>
+      {/* <FlashMessage
+        floating={true}
+        style={{ alignItems: 'center' }}
+        titleStyle={{ fontWeight: 'bold' }}
+      /> */}
+    </NavigationContainer>
   );
 }

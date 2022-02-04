@@ -28,3 +28,11 @@ export const InputText = styled.TextInput.attrs({
   border-radius: 5px;
   padding-left: 10px;
 `;
+
+export const TextError = styled.Text`
+  font-size: 14px;
+  font-weight: 500;
+  color: ${colors.error};
+  align-self: flex-start;
+  margin-bottom: 15px;
+`;
