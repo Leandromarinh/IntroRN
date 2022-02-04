@@ -28,7 +28,7 @@ import Routes from '../../../routes/routes';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const SignInScreen = ({ navigation }) => {
+const SignInScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
 
   const loginValidationSchema = yup.object().shape({
@@ -114,6 +114,7 @@ const SignInScreen = ({ navigation }) => {
                 onSubmitEditing={handleSubmit}
                 error={errors.email}
                 autoComplete='email'
+                placeholder='Digite seu e-mail'
               />
               <Input
                 title={'Senha'}
@@ -126,6 +127,7 @@ const SignInScreen = ({ navigation }) => {
                 onBlur={handleBlur('password')}
                 onSubmitEditing={handleSubmit}
                 error={errors.password}
+                placeholder='Digite sua senha'
               />
               <Button
                 width={screenWidth * 0.353}

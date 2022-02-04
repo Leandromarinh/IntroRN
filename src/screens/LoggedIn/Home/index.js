@@ -1,15 +1,26 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 
-// import { Container } from './styles';
+import { Container, Text } from './styles';
+
+import Button from '../../../components/Button';
+
+import Routes from '../../../routes/routes';
 
 const Home = ({ navigation, route }) => {
   const { name } = route.params;
   console.log(name);
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>ola</Text>
-    </View>
+    <Container>
+      <Text>Bem Vindo, {name}</Text>
+      <Button
+        width={150}
+        marginTop={30}
+        marginLeft={0}
+        text='Sair'
+        onPress={() => navigation.navigate(Routes.SIGN_OUT_ROUTE)}
+      />
+    </Container>
   );
 };
 

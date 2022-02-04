@@ -20,6 +20,8 @@ import { Formik } from 'formik';
 
 import Routes from '../../../routes/routes';
 
+import api from '../../../services/api';
+
 import { showMessage } from 'react-native-flash-message';
 
 const SignUpScreen = ({ navigation }) => {
@@ -74,7 +76,7 @@ const SignUpScreen = ({ navigation }) => {
     } catch {
       showMessage({
         message: 'Erro ao fazer Cadastro',
-        description: `Endereço de email incorreto`,
+        description: `Endereço de email já cadastrado`,
         type: 'danger',
         icon: 'danger',
       });
